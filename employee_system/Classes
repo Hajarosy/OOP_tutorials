@@ -1,0 +1,21 @@
+class Wharrgarbl(object):
+    def __init__(self, a, b, c, sum, version='old'):
+        self.a = a
+        self.b = b
+        self.c = c
+        self.sum = 6
+        self.version = version
+
+    def __int__(self):
+        return self.sum + 9000
+
+    def __what_goes_here__(self):
+        return {'a': self.a, 'b': self.b, 'c': self.c}
+
+    def __iter__(self):
+     yield 'a', self.a
+     yield 'b', self.b
+     yield 'c', self.c
+
+w = Wharrgarbl('one', 'two', 'three',6)
+print(dict(w))

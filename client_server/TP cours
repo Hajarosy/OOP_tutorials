@@ -1,0 +1,5 @@
+msg="add 3 4"
+l=msg.split()
+print(l)
+print(l[0])
+

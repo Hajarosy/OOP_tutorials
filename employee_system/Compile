@@ -1,0 +1,95 @@
+from datetime import date
+from math import floor
+today=date.today()
+
+#dictionnaire des telephones et mac
+Telephone={"0661083672":"mac1","0667387683":"mac2"}
+
+
+class Employes:
+    matricule=99999
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants):
+        self.prenom=prenom
+        self.nom=nom
+        self.date=date(annee,mois,jour)
+        self.experience=experience
+        self.enfants=enfants
+        Employes.matricule+=1
+        self.matricule = Employes.matricule
+        self.login = self.prenom[0] + self.nom[0] + str(self.matricule)
+        a=(today - self.date).days
+        if a<365 and self.experience<1:
+         self.conges=0
+        elif a<1:
+         self.conges=int(a*25+floor(1.5*enfants))
+        else: self.conges=int(25+floor(1.5*enfants))
+
+
+
+class NonCadre(Employes):
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants):
+       Employes.__init__(self,prenom,nom,annee,mois,jour,experience,enfants)
+       self.RTT=0
+       self.salaire= (290+(self.experience/3)*20)*5
+       def __dict__(self):
+           return {'prenom': self.prenom, 'nom': self.nom, 'matricule': self.matricule,'conges':self.conges,'salaire':self.salaire}
+
+
+
+class Cadre(Employes):
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants):
+       Employes.__init__(self,prenom,nom,annee,mois,jour,experience,enfants)
+       self.RTT=26
+
+
+
+class Directeur(Cadre):
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants,mobile):
+       Cadre.__init__(self,prenom,nom,annee,mois,jour,experience,enfants)
+       self.salaire= (1000+(self.experience/2)*30)*5
+       self.mobile=mobile
+       self.mac=Telephone[self.mobile]
+       def __dict__(self):
+           return {'prenom': self.prenom, 'nom': self.nom, 'matricule': self.matricule,'conges':self.conges,'salaire':self.salaire,'mobile':self.mobile,'mac':self.mac}
+
+class Commercial(Cadre):
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants,mobile):
+       Cadre.__init__(self,prenom,nom,annee,mois,jour,experience,enfants)
+       self.salaire= (600+(self.experience/2)*20)*5
+       self.mobile = mobile
+       self.mac = Telephone[self.mobile]
+
+       def __dict__(self):
+           return {'prenom': self.prenom, 'nom': self.nom, 'matricule': self.matricule, 'conges': self.conges,
+                   'salaire': self.salaire, 'mobile': self.mobile, 'mac': self.mac}
+
+
+class AutresCadres(Cadre):
+    def __init__(self,prenom,nom,annee,mois,jour,experience,enfants,mobile):
+       Cadre.__init__(self,prenom,nom,annee,mois,jour,experience,enfants)
+       self.salaire= (600+(self.experience/2)*15)*5
+       self.mobile = mobile
+       self.mac = Telephone[self.mobile]
+
+       def __dict__(self):
+           return {'prenom': self.prenom, 'nom': self.nom, 'matricule': self.matricule, 'conges': self.conges,
+                   'salaire': self.salaire, 'mobile': self.mobile, 'mac': self.mac}
+
+
+Hajar=NonCadre("hajar","khairallah",2016,01,01,3,1)
+Sara=NonCadre("sara","khairallah",2017,8,01,2,1)
+Guillaume=Directeur("Guigui","Cornet",2016,03,04,4,1,"0661083672")
+Hamza=Commercial("Hamza","Bennis",2017,04,04,2,3,"0667387683")
+
+listedesCadres=[Guillaume.__dict__,Hamza.__dict__]
+listedesEmployes=listedesCadres+[Hajar.__dict__]+[Sara.__dict__]
+print("La liste des employes :")
+print(listedesEmployes)
+
+
+tuples = []
+for e in listedesCadres:
+    tuples.append((e['nom'],e['prenom'],e['mobile']))
+print("La liste des employes avec leurs numeros de telephone est:")
+print(tuples)
+
